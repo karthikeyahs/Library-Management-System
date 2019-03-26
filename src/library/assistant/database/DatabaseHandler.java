@@ -23,6 +23,7 @@ public class DatabaseHandler {
         public DatabaseHandler(){
             createConnection();
             setupBookTable();
+            setupMemberTable();
         }
         /*The below function is used to craete a connection between the Java Application and JDBC*/
         /*JDBC stands for Java DataBase Connectivity. It is basically an API for connecting with the
@@ -122,5 +123,29 @@ public class DatabaseHandler {
         }
         finally {
         }
+    }
+
+    private void setupMemberTable() {
+        String TABLE_NAME = "MEMBER";
+            try{
+                stmt = conn.createStatement();
+                DatabaseMetaData dbm = conn.getMetaData();
+                ResultSet tables = dbm.getTables(null, null, TABLE_NAME.toUpperCase(), null);
+                if(tables.next()){
+                    System.out.println("Table " + TABLE_NAME + "already exists. Ready for go!");
+                }
+                
+                else{
+                    stmt.execute("CREATE TABLE " + TABLE_NAME + "("
+                            + "     id varchar(200) primary key,\n"
+                            + "     name varchar(200),\n"
+                            + "     mobile varchar(20),\n"
+                            + "     email varchar(100),\n"
+                            + ")");
+                }
+            }catch(SQLException e){
+                System.err.println(e.getMessage() + " --- setupDatabase");
+            }finally{
+            }
     }
 }
