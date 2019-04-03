@@ -22,8 +22,6 @@ import library.assistant.ui.addbook.BookAddController;
 
 public class BookListController implements Initializable {
         
-    
-    
     ObservableList<Book> list = FXCollections.observableArrayList();
     @FXML
     private AnchorPane rootPane;
@@ -45,7 +43,7 @@ public class BookListController implements Initializable {
     
     @FXML
     private TableColumn<Book, Boolean> availabilityCol;
-    
+    DatabaseHandler handler;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initCol();
@@ -62,9 +60,10 @@ public class BookListController implements Initializable {
     }
 
     private void loadData() {
-       DatabaseHandler handler = new DatabaseHandler();
+       
+       handler = DatabaseHandler.getInstance();
        String qu = "SELECT * FROM BOOK";
-        ResultSet rs = handler.execQuery(qu);
+       ResultSet rs = handler.execQuery(qu);
         
             try {
                 while(rs.next()){

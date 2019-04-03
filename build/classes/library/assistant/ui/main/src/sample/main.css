@@ -1,0 +1,10 @@
+	.sampleFxmlClass{
+	
+	}
+	.setup-button{
+		-fx-background-color: #ccddee;
+		-fx-text-fill: #000000;
+	}
+	.setup-button:hover{
+		-fx-background-color: #c0fff3;
+	}

@@ -1,16 +1,16 @@
 package library.assistant.database;
-
+import java.sql.*;
 //import java.lang.reflect.InvocationTargetException;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+//import java.sql.Connection;
+//import java.sql.DatabaseMetaData;
+//import java.sql.DriverManager;
+//import java.sql.ResultSet;
+//import java.sql.SQLException;
+//import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 
-public class DatabaseHandler {
+public final class DatabaseHandler {
     private static DatabaseHandler handler = null;
         /*The DB_URL variable is used to store the URL/address of the database. As we'll not
         be changing the URL of database, it is made final*/
@@ -20,10 +20,17 @@ public class DatabaseHandler {
         private static Connection conn = null;
         private static Statement stmt = null;
         
-        public DatabaseHandler(){
+        private DatabaseHandler(){
             createConnection();
-            setupBookTable();
             setupMemberTable();
+            setupBookTable();
+        }
+        
+        public static DatabaseHandler getInstance(){
+            if(handler ==  null){
+                handler = new DatabaseHandler();
+            }
+            return handler;
         }
         /*The below function is used to craete a connection between the Java Application and JDBC*/
         /*JDBC stands for Java DataBase Connectivity. It is basically an API for connecting with the
@@ -40,37 +47,38 @@ public class DatabaseHandler {
             }
         }
         
+        void setupMemberTable(){
+            String TABLE_NAME = "MEMBER";
+            try{
+                stmt = conn.createStatement();
+                DatabaseMetaData dbm = conn.getMetaData();
+                ResultSet tables = dbm.getTables(null, null, TABLE_NAME.toUpperCase(), null);
+                if(tables.next()){
+                    System.out.println("Table " + TABLE_NAME + " already exists. Ready to go!");
+                }
+                else{
+                    stmt.execute("CREATE TABLE " + TABLE_NAME + "("
+                            + "     id varchar(200) primary key,\n"
+                            + "     name varchar(200),\n"
+                            + "     mobile varchar(200),\n"
+                            + "     email varchar(100)\n"
+                            + ")");
+                }
+            }catch(SQLException e){
+                System.err.println(e + " --- setupDatabase");
+                e.printStackTrace();
+            }finally{
+            }
+        }
+        
         void setupBookTable(){
             String TABLE_NAME = "BOOK";
             try{
-                /*The stmt is created by the below line of code. This creates a statement object
-                which can then be used to execute database queries which are in statement form.*/
                 stmt = conn.createStatement();
-                
-                /*The above declared setupBookTable is called everytime the application is opened.
-                The below 2 lines of code helps us in checking whether there are any tables in the
-                database. For accessing that information, we use the getMetaData() method.
-                Metadata generally includes the name, size and number of rows of each table present 
-                in a database, along with the columns in each table, their data types, precisions, etc.
-                The getTables() method returns the details of all the tables in the database. The syntax 
-                is as follows:
-                getTables(String catalog, String schemaPattern, String tableNamePattern, String[] types)
-                Retrieves a description of the tables available in the given catalog.*/
                 DatabaseMetaData dbm = conn.getMetaData();
                 ResultSet tables = dbm.getTables(null, null, TABLE_NAME.toUpperCase(), null);
-                
-                /*The if{} block is executed if there are no tables in the database named BOOK, i.e, 
-                it is executed only for the first time.
-                NOTE: Every SQL based Database query has a space after the query and before the closing 
-                double quotes.
-                The else{} block is called everytime a new book is to be entered into the database.
-                The query CREATE TABLE creates the table with the name of the table set to BOOK.
-                id, title, author, publisher are the entries in the table which are of the form varchar.
-                varchar or Variable Character Field is a set of character data of indeterminate length.
-                isAvail is a boolean variable initially set to true. It can be changed to false once the 
-                book is issued.*/
                 if(tables.next()){
-                    System.out.println("Table " + TABLE_NAME + " already exists. Ready for go!");
+                    System.out.println("Table " + TABLE_NAME + " already exists. Ready to go!");
                 }
                 else{
                     stmt.execute("CREATE TABLE " + TABLE_NAME + "("
@@ -85,55 +93,8 @@ public class DatabaseHandler {
                 System.err.println(e.getMessage() + " --- setupDatabase");
             }finally{
             }
-        }
-        
-        void setupMemberTable() {
-        String TABLE_NAME = "MEMBER";
-            try{
-                /*The stmt is created by the below line of code. This creates a statement object
-                which can then be used to execute database queries which are in statement form.*/
-                stmt = conn.createStatement();
-                
-                /*The above declared setupBookTable is called everytime the application is opened.
-                The below 2 lines of code helps us in checking whether there are any tables in the
-                database. For accessing that information, we use the getMetaData() method.
-                Metadata generally includes the name, size and number of rows of each table present 
-                in a database, along with the columns in each table, their data types, precisions, etc.
-                The getTables() method returns the details of all the tables in the database. The syntax 
-                is as follows:
-                getTables(String catalog, String schemaPattern, String tableNamePattern, String[] types)
-                Retrieves a description of the tables available in the given catalog.*/
-                DatabaseMetaData dbm = conn.getMetaData();
-                ResultSet tables = dbm.getTables(null, null, TABLE_NAME.toUpperCase(), null);
-                
-                /*The if{} block is executed if there are no tables in the database named BOOK, i.e, 
-                it is executed only for the first time.
-                NOTE: Every SQL based Database query has a space after the query and before the closing 
-                double quotes.
-                The else{} block is called everytime a new book is to be entered into the database.
-                The query CREATE TABLE creates the table with the name of the table set to BOOK.
-                id, title, author, publisher are the entries in the table which are of the form varchar.
-                varchar or Variable Character Field is a set of character data of indeterminate length.
-                isAvail is a boolean variable initially set to true. It can be changed to false once the 
-                book is issued.*/
-                if(tables.next()){
-                    System.out.println("Table " + TABLE_NAME + " already exists. Ready for go!");
-                }
-                
-                else{
-                    stmt.execute("CREATE TABLE " + TABLE_NAME + "("
-                            + "     id varchar(200) primary key,\n"
-                            + "     name varchar(200),\n"
-                            + "     mobile varchar(20),\n"
-                            + "     email varchar(100),\n"
-                            + " )");
-                }
-            }catch(SQLException e){
-                System.err.println(e.getMessage() + " --- setupDatabase");
-            }finally{
-            }
-    }
-        
+        }        
+       
         /*The below execQuery()method is used to execute the queries like creating a table,
         accessing the table etc. Again, stmt object is used to make a connection with the database.
         This method returns a ResultSet Object. The executeQuery(query) method is used to execute the query.
@@ -164,12 +125,10 @@ public class DatabaseHandler {
         }
         catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Error:" + ex.getMessage(), "Error Occured", JOptionPane.ERROR_MESSAGE);
-            System.out.println("Exception at execQuery:dataHandler" + ex.getLocalizedMessage());
+            System.out.println("Exception at execAction:dataHandler" + ex.getLocalizedMessage());
             return false;
         }
         finally {
         }
     }
-
-    
 }

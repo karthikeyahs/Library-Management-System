@@ -8,8 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
-public class MemberAddLoader extends Application {
-    
+public class MemberAddLoader extends Application{
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("member_add.fxml"));
@@ -22,6 +21,5 @@ public class MemberAddLoader extends Application {
 
     public static void main(String[] args) {
         launch(args);
-    }
-    
+    }   
 }

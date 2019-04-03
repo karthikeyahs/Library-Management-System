@@ -22,6 +22,7 @@ import library.assistant.ui.addbook.BookAddController;
  * @author Dell
  */
 public class MemberListController implements Initializable {
+    
     ObservableList<Member> list = FXCollections.observableArrayList();
     @FXML
     private TableView<Member> tableView;
@@ -36,12 +37,15 @@ public class MemberListController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
+    DatabaseHandler handler;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initCol();
         loadData();
-    }
+    }    
     
     private void initCol() {
         //Inintialising Columns
@@ -52,7 +56,7 @@ public class MemberListController implements Initializable {
     }
 
     private void loadData() {
-       DatabaseHandler handler = new DatabaseHandler();
+       handler = DatabaseHandler.getInstance();
        String qu = "SELECT * FROM MEMBER";
         ResultSet rs = handler.execQuery(qu);
         
@@ -78,13 +82,13 @@ public static class Member{
        
         
         Member(String name, String id, String mobile, String email){
-            this.name = new  SimpleStringProperty(name);
-            this.id = new  SimpleStringProperty(id);
-            this.mobile = new  SimpleStringProperty(mobile);
-            this.email = new  SimpleStringProperty(email);
+            this.name = new SimpleStringProperty(name);
+            this.id = new SimpleStringProperty(id);
+            this.mobile = new SimpleStringProperty(mobile);
+            this.email = new SimpleStringProperty(email);
         }
 
-        public String getTitle() {
+        public String getName() {
             return name.get();
         }
 
@@ -92,13 +96,13 @@ public static class Member{
             return id.get();
         }
 
-        public String getAuthor() {
+        public String getMobile() {
             return mobile.get();
         }
 
-        public String getPublisher() {
+        public String getEmail() {
             return email.get();
         }
-    }    
-    
+   
+}
 }

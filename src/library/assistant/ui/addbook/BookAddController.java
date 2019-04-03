@@ -38,12 +38,12 @@ public class BookAddController implements Initializable {
     private Button cancelButton;
     @FXML
     private AnchorPane rootPane;
+    
     DatabaseHandler databaseHandler;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        databaseHandler = new DatabaseHandler();
-       
+        databaseHandler = DatabaseHandler.getInstance();
         checkData();
     }
 
@@ -53,6 +53,7 @@ public class BookAddController implements Initializable {
         String bookAuthor = author.getText();
         String bookName = title.getText();
         String bookPublisher = publisher.getText();
+        
         if(bookID.isEmpty() || bookAuthor.isEmpty() || bookName.isEmpty() || bookPublisher.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
@@ -78,7 +79,7 @@ public class BookAddController implements Initializable {
         {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
-            alert.setContentText("Failed");
+            alert.setContentText("Failed to add book");
             alert.showAndWait();
         }
     }   

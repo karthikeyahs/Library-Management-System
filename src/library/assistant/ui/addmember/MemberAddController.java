@@ -14,9 +14,7 @@ import library.assistant.database.DatabaseHandler;
 
 
 public class MemberAddController implements Initializable {
-    
-    DatabaseHandler handler;
-    
+   
     @FXML
     private TextField name;
     @FXML
@@ -31,9 +29,11 @@ public class MemberAddController implements Initializable {
     private Button cancelButton;
     @FXML
     private AnchorPane rootPane;
+    
+    DatabaseHandler databaseHandler;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        handler = new DatabaseHandler();
+        databaseHandler = DatabaseHandler.getInstance();
     }    
     
     @FXML
@@ -43,7 +43,7 @@ public class MemberAddController implements Initializable {
         String mMobile = mobile.getText();
         String mEmail = email.getText();
         
-        Boolean flag = mName.isEmpty()||mID.isEmpty()||mMobile.isEmpty()||mEmail.isEmpty();
+        boolean flag = mName.isEmpty()||mID.isEmpty()||mMobile.isEmpty()||mEmail.isEmpty();
         if(flag){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText(null);
@@ -58,14 +58,15 @@ public class MemberAddController implements Initializable {
 //                            + "     mobile varchar(20),\n"
 //                            + "     email varchar(100),\n"
 //                            + " )");
-        String st = "INSERT INTO MEMBER VALUES (" 
+        String st = "INSERT INTO MEMBER(id,name,mobile,email) VALUES (" 
                 + "'" + mID + "',"  
                 + "'" + mName + "',"  
-                + "'" + mMobile + "',"  
-                + "'" + mEmail + "" 
-                + " )";
+                + "'" + mMobile + "'," 
+                + "'" + mEmail + "'"
+                + ")";
+   
         System.out.println(st);
-        if(handler.execAction(st)){
+        if(databaseHandler.execAction(st)){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);
             alert.setContentText("Library member added");
@@ -81,5 +82,7 @@ public class MemberAddController implements Initializable {
     
     @FXML
     private void cancel(ActionEvent event){
+                Stage stage = (Stage)rootPane.getScene().getWindow();
+                stage.close();
     }
 }
