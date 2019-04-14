@@ -5,16 +5,11 @@
         <group>
             <file>file:/F:/Library%20Assistant/src/library/assistant/ui/main/src/sample/Controller.java</file>
             <file>file:/F:/Library%20Assistant/src/library/assistant/ui/main/src/sample/sample.fxml</file>
-            <file>file:/F:/Library%20Assistant/src/library/assistant/ui/addmember/MemberAddLoader.java</file>
-            <file>file:/F:/Library%20Assistant/src/library/assistant/ui/main/src/sample/Main.java</file>
-            <file>file:/F:/Library%20Assistant/src/library/assistant/ui/addbook/LibraryAssistant.java</file>
-            <file>file:/F:/Library%20Assistant/src/library/assistant/ui/addbook/BookAddController.java</file>
-            <file>file:/F:/Library%20Assistant/src/library/assistant/ui/listbook/BookListLoader.java</file>
-            <file>file:/F:/Library%20Assistant/src/library/assistant/ui/addbook/addbook.css</file>
-            <file>file:/F:/Library%20Assistant/src/library/assistant/ui/listmember/MemberListController.java</file>
+            <file>file:/F:/Library%20Assistant/src/library/assistant/ui/listbook/BookListController.java</file>
             <file>file:/F:/Library%20Assistant/src/library/assistant/database/DatabaseHandler.java</file>
-            <file>file:/F:/Library%20Assistant/src/library/assistant/ui/main/src/sample/main.css</file>
-            <file>file:/F:/Library%20Assistant/src/library/assistant/ui/listmember/MemberListLoader.java</file>
+            <file>file:/F:/Library%20Assistant/src/library/assistant/ui/main/src/sample/Main.java</file>
+            <file>file:/F:/Library%20Assistant/src/library/assistant/ui/addbook/BookAddController.java</file>
+            <file>file:/F:/Library%20Assistant/src/library/assistant/ui/listmember/MemberListController.java</file>
             <file>file:/F:/Library%20Assistant/src/library/assistant/ui/addmember/MemberAddController.java</file>
         </group>
     </open-files>

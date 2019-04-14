@@ -2,9 +2,14 @@
 	
 	}
 	.setup-button{
-		-fx-background-color: #ccddee;
-		-fx-text-fill: #000000;
+		-fx-background-color: #4286f4;
+		-fx-text-fill: #ffffff;
 	}
 	.setup-button:hover{
-		-fx-background-color: #c0fff3;
+		-fx-background-color: #071730;
+                -fx-text-fill: #ffffff;
 	}
+        .bodybg{
+            -fx-background-image: url("/library/assistant/ui/main/src/sample/Icons/Book.jpg");
+            -fx-background-size: 100% 100%;
+        }

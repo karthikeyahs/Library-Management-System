@@ -1,12 +1,5 @@
 package library.assistant.database;
 import java.sql.*;
-//import java.lang.reflect.InvocationTargetException;
-//import java.sql.Connection;
-//import java.sql.DatabaseMetaData;
-//import java.sql.DriverManager;
-//import java.sql.ResultSet;
-//import java.sql.SQLException;
-//import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 
@@ -24,6 +17,7 @@ public final class DatabaseHandler {
             createConnection();
             setupMemberTable();
             setupBookTable();
+            setupIssueTable();
         }
         
         public static DatabaseHandler getInstance(){
@@ -100,6 +94,31 @@ public final class DatabaseHandler {
         This method returns a ResultSet Object. The executeQuery(query) method is used to execute the query.
         If there is any SQLException, then the catch block is executed.*/
 
+        void setupIssueTable(){
+            String TABLE_NAME = "ISSUE";
+            try{
+                stmt = conn.createStatement();
+                DatabaseMetaData dbm = conn.getMetaData();
+                ResultSet tables = dbm.getTables(null, null, TABLE_NAME.toUpperCase(), null);
+                if(tables.next()){
+                    System.out.println("Table " + TABLE_NAME + " already exists. Ready to go!");
+                }
+                else{
+                    stmt.execute("CREATE TABLE " + TABLE_NAME + "("
+                            + "     bookID varchar(200) primary key,\n"
+                            + "     memberID varchar(200),\n"
+                            + "     issueTime timestamp default CURRENT_TIMESTAMP,\n"
+                            + "     renew_count integer default 0,\n"
+                            + "     FOREIGN KEY (bookID) REFERENCES BOOK(id),\n"
+                            + "     FOREIGN KEY (memberID) REFERENCES MEMBER(id)\n"
+                            + " )");
+                }
+            }catch(SQLException e){
+                System.err.println(e.getMessage() + " --- setupDatabase");
+            }finally{
+            }
+        }
+        
         public ResultSet execQuery(String query) {
             ResultSet result;
             try {
